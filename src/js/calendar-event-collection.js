@@ -19,9 +19,8 @@ CalendarEventCollection.prototype._addEvents = function (eventList) {
 
 CalendarEventCollection.prototype._setEventsWidth = function () {
   var allBusyTimes = this._getNumberOfEventForDay();
-  this.events.forEach(function (event) {
-    // Create an object with the number of events at any point in time
-    event.width = 1;
+  this.events.forEach(function (calendarEvent) {
+    calendarEvent.setWidth(allBusyTimes);
   });
 };
 
@@ -34,39 +33,39 @@ CalendarEventCollection.prototype._getNumberOfEvents = function (allTimeOccupanc
 };
 
 CalendarEventCollection.prototype._getNumberOfEventForDay = function () {
-  var allTimeOccupancies = [{
-    start: 0, // 9:00 a.m.
-    end: 720, // 9:00 p.m.
-    numberOfEvents: 0
-  }];
+  var allTimeOccupanciesPerMinute = {};
+  var allTimeOccupancies = [];
+  _.forEach(_.range(720), function (val) {
+    allTimeOccupanciesPerMinute[val] = 0;
+  });
   // For every event
   this.events.forEach(function (calendarEvent) {
-    var allStartTimes = _.pluck(allTimeOccupancies, 'start');
-    var allEndTimes = _.pluck(allTimeOccupancies, 'end');
-    /**
-     * Find the start time that is less than && closes to start time
-     * Find the end time that is more than && closes to end time
-     */
-    var closestPastStartTime = Math.max(allStartTimes.filter(function (timeInMinutes) {
-      return timeInMinutes < calendarEvent.start;
-    }));
-    var closestFutureEndTime = Math.min(allEndTimes.filter(function (timeInMinutes) {
-      return timeInMinutes > calendarEvent.end;
-    }));
-    // Get # of events at that start/end time
-    var numberOfEventsAtStart = this._getNumberOfEvents(allTimeOccupancies, 'start', closestPastStartTime);
-    var numberOfEventsAtEnd = this._getNumberOfEvents(allTimeOccupancies, 'end', closestFutureEndTime);
-    // Add new start time at event start time and increase number of events by 1
-    // Add a new end time at event end and increase number of events by 1
-    console.log('closestPastStartTime', closestPastStartTime);
-    console.log('closestFutureEndTime', closestFutureEndTime);
-    console.log(calendarEvent);
+    for (var i = calendarEvent.start; i < calendarEvent.end; i += 1) {
+      allTimeOccupanciesPerMinute[i] += 1;
+    }
   }.bind(this));
+  var _previousValue = null;
+  _.forEach(allTimeOccupanciesPerMinute, function (val, i) {
+    if (val !== _previousValue) {
+      if (_previousValue !== null) {
+        allTimeOccupancies[allTimeOccupancies.length - 1].end = i;
+      }
+      allTimeOccupancies.push({
+        start: i,
+        events: val,
+      });
+    }
+    if (i === allTimeOccupanciesPerMinute.length - 1) {
+      allTimeOccupancies[allTimeOccupancies.length - 1].end = i;
+    }
+    _previousValue = val;
+  });
   return allTimeOccupancies;
 };
 
 CalendarEventCollection.prototype.update = function (eventList) {
   this._addEvents(eventList);
+  return this;
 };
 
 module.exports = CalendarEventCollection;

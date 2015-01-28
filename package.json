@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "es6-promise": "^2.0.1",
+    "lodash": "^3.0.0",
     "react": "^0.12.2"
   }
 }
