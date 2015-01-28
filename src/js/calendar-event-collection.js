@@ -18,9 +18,10 @@ CalendarEventCollection.prototype._addEvents = function (eventList) {
 };
 
 CalendarEventCollection.prototype._setEventsWidth = function () {
-  var allBusyTimes = this._getNumberOfEventForDay();
+  var allBusyTimeSlots = this._getNumberOfEventForDay();
   this.events.forEach(function (calendarEvent) {
-    calendarEvent.setWidth(allBusyTimes);
+    var timeSlotIndex = calendarEvent.setWidth(allBusyTimeSlots);
+    allBusyTimeSlots[timeSlotIndex].queuedEvents += 1;
   });
 };
 
@@ -53,6 +54,7 @@ CalendarEventCollection.prototype._getNumberOfEventForDay = function () {
       allTimeOccupancies.push({
         start: i,
         events: val,
+        queuedEvents: 0,
       });
     }
     if (i === allTimeOccupanciesPerMinute.length - 1) {

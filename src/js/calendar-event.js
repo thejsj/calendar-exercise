@@ -1,24 +1,26 @@
 'use strict';
-var _ = require('lodash');
 
 var CalendarEvent = function (start, end) {
   this.start = start;
   this.end = end;
-  this.width = null; // 0 - 1
+  this.width = null;
+  this.x = null;
 };
 
-CalendarEvent.prototype.setWidth = function (allBusyTimes) {
-  var allBusyTimesInTimeRange = _.filter(allBusyTimes, function (timeSlot) {
+CalendarEvent.prototype.setWidth = function (allBusyTimeSlots) {
+  var maxNumberOfEvents = 0, maxNumberOfEventsIndex = null;
+  for (var i = 0; i < allBusyTimeSlots.length; i += 1) {
+    var timeSlot = allBusyTimeSlots[i];
     if (this.start <= timeSlot.start && timeSlot.end <= this.end) {
-      return true;
+      if (timeSlot.events > maxNumberOfEvents) {
+        maxNumberOfEvents = timeSlot.events;
+        maxNumberOfEventsIndex = i + '';
+      }
     }
-    return false;
-  }.bind(this));
-  var maxNumberOfEvents = _.reduce(allBusyTimesInTimeRange, function (memo, entry) {
-    return Math.max(entry.events, memo);
-  }, 0);
+  }
   this.width = 1 / maxNumberOfEvents;
-  return this;
+  this.x = this.width * allBusyTimeSlots[maxNumberOfEventsIndex].queuedEvents;
+  return maxNumberOfEventsIndex;
 };
 
 module.exports = CalendarEvent;
