@@ -87,23 +87,27 @@ CalendarEventCollection.prototype._getNumberOfEventForDay = function () {
   var allTimeOccupanciesPerMinute = {};
   var allTimeOccupancies = [];
   _.forEach(_.range(720), function (val) {
-    allTimeOccupanciesPerMinute[val] = 0;
+    allTimeOccupanciesPerMinute[val] = {
+       count: 0,
+       forceNewSlot: false
+    };
   });
   // For every event
   this.events.forEach(function (calendarEvent) {
+    allTimeOccupanciesPerMinute[calendarEvent.start].forceNewSlot = true;
     for (var i = calendarEvent.start; i < calendarEvent.end; i += 1) {
-      allTimeOccupanciesPerMinute[i] += 1;
+      allTimeOccupanciesPerMinute[i].count += 1;
     }
   }.bind(this));
-  var _previousValue = null;
-  _.forEach(allTimeOccupanciesPerMinute, function (val, i) {
-    if (val !== _previousValue) {
-      if (_previousValue !== null) {
+  var _previousMinuteSlotCount = null;
+  _.forEach(allTimeOccupanciesPerMinute, function (minuteSlot, i) {
+    if (minuteSlot.count !== _previousMinuteSlotCount || minuteSlot.forceNewSlot) {
+      if (_previousMinuteSlotCount !== null) {
         allTimeOccupancies[allTimeOccupancies.length - 1].end = i;
       }
       allTimeOccupancies.push({
         start: i,
-        events: val,
+        events: minuteSlot.count,
         queuedEvents: 0,
         spaceAvailable: 1,
         queuedEventsInThisGroup: 0,
@@ -111,7 +115,7 @@ CalendarEventCollection.prototype._getNumberOfEventForDay = function () {
         index: allTimeOccupancies.length
       });
     }
-    _previousValue = val;
+    _previousMinuteSlotCount = minuteSlot.count;
   });
   allTimeOccupancies[allTimeOccupancies.length - 1].end = 720;
   return allTimeOccupancies;

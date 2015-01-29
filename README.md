@@ -26,9 +26,9 @@ If it cannot be invoked, the submission will be rejected.
 This function should be idempotent.
 
 In your submission, please implement the calendar with the following input:
-
+```
 [ {start: 30, end: 150}, {start: 540, end: 600}, {start: 560, end: 620}, {start: 610, end: 670} ];
-
+```
 A screenshot of the expected output is attached.
 
 ## FAQ

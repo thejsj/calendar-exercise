@@ -46,6 +46,14 @@ window.layouts = [
     {start: 570, end: 650},
     {start: 590, end: 620},
     {start: 620, end: 670}
+  ],
+  [
+    {start: 0, end: 720},
+    {start: 100, end: 200},
+    {start: 100, end: 200},
+    {start: 100, end: 200},
+    {start: 300, end: 350},
+    {start: 300, end: 350}
   ]
 ];
 window.layOutDay(layouts[0]);

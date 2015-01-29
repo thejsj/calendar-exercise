@@ -24,7 +24,9 @@ CalendarEvent.prototype._getAllIntersectingSlots = function (allBusyTimeSlots) {
   var slots = [];
   for (var i = 0; i < allBusyTimeSlots.length; i += 1) {
     var timeSlot = allBusyTimeSlots[i];
-    if (this.start <= timeSlot.start && timeSlot.end <= this.end) {
+    // (timeSlot.start <= this.start) && (this.start <= timeSlot.end) ||
+    // (timeSlot.start <= this.end) && (this.end <= timeSlot.end)
+    if ((this.start <= timeSlot.start) && (timeSlot.end <= this.end)) {
       slots.push(timeSlot);
     }
   }
