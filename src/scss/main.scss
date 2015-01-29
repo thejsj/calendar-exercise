@@ -1,11 +1,100 @@
+$dark-gray: #686868;
+$gray: #a7a7a7;
+$blue: #4b6ea8;
+$calendar-event-border-gray: #d6d6d6;
+$calendar-event-text-gray: #797979;
+
 * {
   box-sizing: border-box;
 }
 
-body {
-  background: blue;
+body, html {
+  padding: 0;
+  margin: 0;
 }
 
-#container {
+.calendar-container {
+  margin-top: 30px;
+  margin-bottom: 30px;
+  height: 720px;
+  font-family: Verdana, sans-serif;
 
+  .calendar-hour-list-container {
+    width: 75px;
+    height: 100%;
+    float: left;
+    text-align: right;
+    position: relative;
+
+    .hour {
+      position: absolute;
+      color: $gray;
+      font-size: 9px;
+      width: 100%;
+      padding-right: 9px;
+      .am-or-pm {
+        display: none;
+      }
+      &.is-hour-mark-true {
+        .am-or-pm {
+          display: inline;
+          text-transform: uppercase;
+        }
+        .time {
+          font-size: 12px;
+          color: $dark-gray;
+        }
+      }
+    }
+  }
+  .calendar-event-list-container {
+    width: 620px;
+    background: #ececec;
+    border-left: solid #d6d6d6 1px;
+    float: left;
+    height: 100%;
+    padding-right: 10px;
+    padding-left: 10px;
+    .calendar-event-list {
+      height: 100%;
+      position: relative;
+    }
+  }
+}
+
+.calendar-event {
+  background: #fff;
+  position: absolute;
+  overflow: hidden;
+  .calendar-border {
+    width: 4px;
+    height: 100%;
+    background: $blue;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+  }
+  .calendar-content {
+    border: solid $calendar-event-border-gray 1px;
+    padding: 0 11px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+  }
+  .calendar-event-header {
+    font-size: 12px;
+    color: $blue;
+    font-weight: 400;
+    line-height: 1.1em;
+    margin: 5px 0;
+  }
+  .calendar-event-location {
+    font-size: 10px;
+    color: $calendar-event-text-gray;
+    line-height: 1.1em;
+    margin: 5px 0;
+  }
 }

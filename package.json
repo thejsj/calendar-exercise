@@ -16,11 +16,14 @@
     "mocha": "^2.1.0",
     "reactify": "^1.0.0",
     "should": "^4.6.1",
-    "vinyl-source-stream": "^1.0.0"
+    "vinyl-source-stream": "^1.0.0",
+    "watchify": "^2.2.1"
   },
   "dependencies": {
     "es6-promise": "^2.0.1",
+    "jshint-jsx": "^0.4.1",
     "lodash": "^3.0.0",
+    "moment": "^2.9.0",
     "react": "^0.12.2"
   }
 }

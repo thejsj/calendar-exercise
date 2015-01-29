@@ -50,6 +50,70 @@ describe('CalendarEventCollection', function () {
         eventCollection.events[3].width.should.equal(1 / 3);
         eventCollection.events[4].width.should.equal(1 / 3);
       });
+
+      it('should set width to 2/3 if there is only one collision', function () {
+        var eventCollection = new CalendarEventCollection([
+          {start: 0, end: 720},
+            {start: 100, end: 200},
+            {start: 100, end: 200},
+          {start: 300, end: 350}
+        ]);
+        eventCollection.events[0].width.should.equal(1 /3);
+        eventCollection.events[1].width.should.equal(1 / 3);
+        eventCollection.events[2].width.should.equal(1 / 3);
+        eventCollection.events[3].width.should.approximately(2 / 3, 0.1);
+      });
+
+      it('should set width to 1/3 if there is only one collision', function () {
+        var eventCollection = new CalendarEventCollection([
+          {start: 0, end: 720},
+            {start: 100, end: 200},
+            {start: 100, end: 200},
+            {start: 100, end: 200},
+          {start: 300, end: 350},
+          {start: 300, end: 350}
+        ]);
+        eventCollection.events[0].width.should.equal(0.25);
+        eventCollection.events[1].width.should.equal(0.25);
+        eventCollection.events[2].width.should.equal(0.25);
+        eventCollection.events[3].width.should.equal(0.25);
+        eventCollection.events[4].width.should.approximately(0.375, 0.1);
+        eventCollection.events[5].width.should.approximately(0.375, 0.1);
+      });
+
+      it('should allocate width based on previous collisions', function () {
+        var eventCollection = new CalendarEventCollection([
+          {start: 0, end: 720},
+          {start: 30, end: 150},
+          {start: 30, end: 150},
+          {start: 680, end: 720},
+          {start: 680, end: 720},
+          {start: 680, end: 720},
+          {start: 680, end: 720},
+        ]);
+        eventCollection.events[0].width.should.equal(0.2);
+        eventCollection.events[1].width.should.equal(0.4);
+        eventCollection.events[2].width.should.equal(0.4);
+        eventCollection.events[3].width.should.equal(0.2);
+        eventCollection.events[4].width.should.equal(0.2);
+        eventCollection.events[5].width.should.equal(0.2);
+        eventCollection.events[6].width.should.equal(0.2);
+      });
+
+      it('should allocate width based on previous collisions', function () {
+        var eventCollection = new CalendarEventCollection([
+          {start: 30, end: 150},
+          {start: 540, end: 600},
+          {start: 570, end: 650},
+          {start: 590, end: 620},
+          {start: 620, end: 670}
+        ]);
+        eventCollection.events[0].width.should.equal(1);
+        eventCollection.events[1].width.should.equal(1 / 3);
+        eventCollection.events[2].width.should.equal(1 / 3);
+        eventCollection.events[3].width.should.equal(1 / 3);
+        eventCollection.events[4].width.should.equal(2 / 3);
+      });
     });
 
     describe('setX', function () {
@@ -81,19 +145,49 @@ describe('CalendarEventCollection', function () {
       it('should set x to 0, 0.33, and 0.66 when two conflicts are found', function () {
         var eventCollection = new CalendarEventCollection([
           {start: 30, end: 150},
-          {start: 540, end: 600},
-          {start: 590, end: 620},
-          {start: 570, end: 650},
-          {start: 610, end: 670}
+            {start: 540, end: 600},
+            {start: 570, end: 650},
+            {start: 590, end: 620},
+          {start: 620, end: 670}
         ]);
         eventCollection.events[0].x.should.equal(0);
-        eventCollection.events[1].x.should.equal(0);
-        eventCollection.events[2].x.should.equal(1 / 3);
+        eventCollection.events[1].x.should.equal(1 / 3);
+        eventCollection.events[2].x.should.equal(0);
         eventCollection.events[3].x.should.equal(1 / 3 * 2);
         eventCollection.events[4].x.should.equal(0);
       });
+
+      it('should set width to 2/3 if there is only one collision', function () {
+        var eventCollection = new CalendarEventCollection([
+          {start: 0, end: 720},
+            {start: 100, end: 200},
+            {start: 100, end: 200},
+          {start: 300, end: 350}
+        ]);
+        eventCollection.events[0].x.should.equal(0);
+        eventCollection.events[1].x.should.approximately(1 / 3, 0.001);
+        eventCollection.events[2].x.should.equal(2 / 3);
+        eventCollection.events[3].x.should.approximately(1 / 3, 0.001);
+      });
+
+      it('should set width to 1/3 if there is only one collision', function () {
+        var eventCollection = new CalendarEventCollection([
+          {start: 0, end: 720},
+            {start: 100, end: 200},
+            {start: 100, end: 200},
+            {start: 100, end: 200},
+          {start: 300, end: 350},
+          {start: 300, end: 350}
+        ]);
+        eventCollection.events[0].width.should.equal(0.25);
+        eventCollection.events[1].width.should.equal(0.25);
+        eventCollection.events[2].width.should.equal(0.25);
+        eventCollection.events[3].width.should.equal(0.25);
+        eventCollection.events[4].width.should.approximately(0.375, 0.001);
+        eventCollection.events[5].width.should.approximately(0.375, 0.001);
+      });
+
     });
 
   });
-
 });
