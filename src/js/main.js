@@ -1,7 +1,7 @@
 'use strict';
 var React = require('react');
-var CalendarEventCollection = require('./calendar-event-collection');
-var CalendarView = require('./calendar-view');
+var CalendarEventCollection = require('./classes/calendar-event-collection');
+var CalendarView = require('./views/calendar-view');
 
 (function () {
   window.layOutDay = function (events) {
