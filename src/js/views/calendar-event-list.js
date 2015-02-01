@@ -8,7 +8,7 @@ var CalenderEventList = React.createClass({
       calenderEvent.style =  {
         top: calenderEvent.start,
         height: calenderEvent.end - calenderEvent.start,
-        left: (calenderEvent.x * 100) + '%',
+        left: (calenderEvent.xStart * 100) + '%',
         width: (calenderEvent.width * 100) + '%'
       };
     });

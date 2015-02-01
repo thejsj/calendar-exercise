@@ -16,7 +16,7 @@ var CalendarEvent = function (calendarEventObject) {
   this.duration = this.end - this.start;
   // Display Properties
   this.width = null;
-  this.x = null;
+  this.xStart = null;
   this.xEnd = null;
   // Nodes
   this.intersectingEvents = [];
@@ -38,6 +38,51 @@ CalendarEvent.prototype.setWidth = function () {
   var allWidthsFromIntersectingEvents = this._getAllIntersectingWidths();
   var maxNumberOfIntersectingEventsWithLowerOrSameIntersections = this._getNumberOfEventsWithSameOrLowerIntersections();
   this.width = (1 - allWidthsFromIntersectingEvents) / (maxNumberOfIntersectingEventsWithLowerOrSameIntersections);
+};
+
+CalendarEvent.prototype.setX = function () {
+  // Get xStart and xEnd values (that are not null) for events in all cliques
+  var allXValuesInClique = this.getAllXValuesInClique();
+  // Check if xStart:0 --> xEnd:width is available, use it
+  // Recursively check if any x slots are taken,
+  var checkAllXPositions = function (xStart, xEnd, width) {
+    // Go through all slots
+    for (var i = 0; i < allXValuesInClique.length; i += 1) {
+      var _event = allXValuesInClique[i];
+      var __xStart = +(_event.xStart.toFixed(20));
+      var __xEnd = +(_event.xEnd.toFixed(20));
+      // check xStart and xEnd are within range
+      if (
+        (xStart <= __xStart && __xStart < xEnd) ||
+        (xStart < __xEnd && __xEnd <= xEnd)
+      ) {
+        // return function with new startX
+        return checkAllXPositions(_event.xEnd, _event.xEnd + width, width);
+      }
+    }
+    return xStart;
+  };
+  this.xStart = checkAllXPositions(0, this.width, this.width);
+  this.xEnd = this.xStart + this.width;
+};
+
+CalendarEvent.prototype.getAllXValuesInClique = function () {
+  // console.log('this.cliques');
+  // // console.log(this.cliques);
+  // console.log(_.map(this.cliques, function (arr) {
+  //   return _.pluck(arr, 'id');
+  // }));
+  return _.flatten(_.map(this.cliques, function (nodes) {
+    var allNodes = _.filter(nodes, function (node) {
+      return (node !== this && node.xStart !== null && node.xEnd !== null);
+    });
+    return _.map(allNodes, function (node) {
+      return {
+        xStart: node.xStart,
+        xEnd: node.xEnd
+      };
+    });
+  }));
 };
 
 CalendarEvent.prototype._getNumberOfEventsWithSameOrLowerIntersections = function () {
@@ -63,26 +108,16 @@ CalendarEvent.prototype._getAllIntersectingWidths = function () {
 };
 
 CalendarEvent.prototype._getIntersectingEvents = function (allEvents) {
-  var intersectingEvents = [];
   var eventsIntersect = function (firstEvent, secondEvent) {
-    if (
+    return (
       (secondEvent.start <= firstEvent.start && firstEvent.start < secondEvent.end) ||
       (secondEvent.start < firstEvent.end && firstEvent.end <= secondEvent.end) ||
       (firstEvent.start <= secondEvent.start && secondEvent.end <= firstEvent.end)
-    ) {
-      return true;
-    }
-    return false;
+    );
   };
-  allEvents.forEach(function (calendarEvent) {
-    if (
-      (calendarEvent !== this) &&
-      (eventsIntersect(this, calendarEvent))
-    ) {
-      intersectingEvents.push(calendarEvent);
-    }
+  return _.filter(allEvents, function (calendarEvent) {
+    return (calendarEvent !== this) && (eventsIntersect(this, calendarEvent));
   }.bind(this));
-  return intersectingEvents;
 };
 
 module.exports = CalendarEvent;

@@ -2,6 +2,14 @@
 /*jshint node:true */
 'use strict';
 
+if (typeof window === 'undefined') {
+  console.log('setwindow');
+  global.window = {};
+}
+
+console.time = function () {}.bind(console);
+console.timeEnd = function () {}.bind(console);
+
 var should = require('should');
 var CalendarEventCollection = require('../src/js/classes/calendar-event-collection');
 
@@ -70,7 +78,6 @@ describe('CalendarEventCollection', function () {
             {start: 100, end: 200},
           {start: 300, end: 350}
         ]);
-        // console.log(eventCollection.events);
         eventCollection.events[0].width.should.approximately(1 /3, 0.001);
         eventCollection.events[1].width.should.approximately(1 / 3, 0.001);
         eventCollection.events[2].width.should.approximately(1 / 3, 0.001);
@@ -129,7 +136,7 @@ describe('CalendarEventCollection', function () {
       });
     });
 
-    xdescribe('setX', function () {
+    describe('setX', function () {
 
       it('should set all x values to 0 when no conflicts are found', function () {
         var eventCollection = new CalendarEventCollection([
@@ -137,9 +144,9 @@ describe('CalendarEventCollection', function () {
           {start: 540, end: 600},
           {start: 610, end: 670}
         ]);
-        eventCollection.events[0].x.should.equal(0);
-        eventCollection.events[1].x.should.equal(0);
-        eventCollection.events[2].x.should.equal(0);
+        eventCollection.events[0].xStart.should.equal(0);
+        eventCollection.events[1].xStart.should.equal(0);
+        eventCollection.events[2].xStart.should.equal(0);
       });
 
       it('should set x to 0 and 0.5 when one conflict is found', function () {
@@ -149,10 +156,10 @@ describe('CalendarEventCollection', function () {
           {start: 590, end: 620},
           {start: 610, end: 670}
         ]);
-        eventCollection.events[0].x.should.equal(0);
-        eventCollection.events[1].x.should.equal(0);
-        eventCollection.events[2].x.should.equal(0.5);
-        eventCollection.events[3].x.should.equal(0);
+        eventCollection.events[0].xStart.should.equal(0);
+        eventCollection.events[1].xStart.should.equal(0);
+        eventCollection.events[2].xStart.should.equal(0.5);
+        eventCollection.events[3].xStart.should.equal(0);
       });
 
       it('should set x to 0, 0.33, and 0.66 when two conflicts are found', function () {
@@ -163,11 +170,11 @@ describe('CalendarEventCollection', function () {
             {start: 590, end: 620},
           {start: 620, end: 670}
         ]);
-        eventCollection.events[0].x.should.equal(0);
-        eventCollection.events[1].x.should.equal(1 / 3);
-        eventCollection.events[2].x.should.equal(0);
-        eventCollection.events[3].x.should.equal(2 / 3);
-        eventCollection.events[4].x.should.approximately(1 / 3, 0.00001);
+        eventCollection.events[0].xStart.should.equal(0);
+        eventCollection.events[1].xStart.should.equal(1 / 3);
+        eventCollection.events[2].xStart.should.equal(0);
+        eventCollection.events[3].xStart.should.equal(2 / 3);
+        eventCollection.events[4].xStart.should.approximately(1 / 3, 0.00001);
       });
 
       it('should set width to 2/3 if there is only one collision', function () {
@@ -177,10 +184,10 @@ describe('CalendarEventCollection', function () {
             {start: 100, end: 200},
           {start: 300, end: 350}
         ]);
-        eventCollection.events[0].x.should.equal(0);
-        eventCollection.events[1].x.should.approximately(1 / 3, 0.001);
-        eventCollection.events[2].x.should.equal(2 / 3);
-        eventCollection.events[3].x.should.approximately(1 / 3, 0.001);
+        eventCollection.events[0].xStart.should.equal(0);
+        eventCollection.events[1].xStart.should.approximately(1 / 3, 0.001);
+        eventCollection.events[2].xStart.should.equal(2 / 3);
+        eventCollection.events[3].xStart.should.approximately(1 / 3, 0.001);
       });
 
       it('should set width to 1/3 if there is only one collision', function () {
@@ -192,12 +199,12 @@ describe('CalendarEventCollection', function () {
           {start: 300, end: 350},
           {start: 300, end: 350}
         ]);
-        eventCollection.events[0].x.should.equal(0);
-        eventCollection.events[1].x.should.equal(0.25);
-        eventCollection.events[2].x.should.equal(0.5);
-        eventCollection.events[3].x.should.equal(0.75);
-        eventCollection.events[4].x.should.approximately(0.25, 0.001);
-        eventCollection.events[5].x.should.approximately(0.625, 0.001);
+        eventCollection.events[0].xStart.should.equal(0);
+        eventCollection.events[1].xStart.should.equal(0.25);
+        eventCollection.events[2].xStart.should.equal(0.5);
+        eventCollection.events[3].xStart.should.equal(0.75);
+        eventCollection.events[4].xStart.should.approximately(0.25, 0.001);
+        eventCollection.events[5].xStart.should.approximately(0.625, 0.001);
       });
 
       it('should assign the x values correctly with 3 events', function () {
@@ -207,10 +214,10 @@ describe('CalendarEventCollection', function () {
           {start: 560, end: 620},
           {start: 610, end: 670}
         ]);
-        eventCollection.events[0].x.should.equal(0);
-        eventCollection.events[1].x.should.equal(0);
-        eventCollection.events[2].x.should.equal(0.5);
-        eventCollection.events[3].x.should.equal(0);
+        eventCollection.events[0].xStart.should.equal(0);
+        eventCollection.events[1].xStart.should.equal(0);
+        eventCollection.events[2].xStart.should.equal(0.5);
+        eventCollection.events[3].xStart.should.equal(0);
       });
     });
   });

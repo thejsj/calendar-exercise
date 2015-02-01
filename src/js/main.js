@@ -1,11 +1,12 @@
 'use strict';
 var React = require('react');
+
 var CalendarEventCollection = require('./classes/calendar-event-collection');
 var CalendarView = require('./views/calendar-view');
 
+
 (function () {
   window.layOutDay = function (events) {
-    console.log(events);
     var eventCollection = new CalendarEventCollection(events);
     React.render(
       <CalendarView eventCollection={ eventCollection } />,
@@ -56,11 +57,11 @@ window.layouts = [
     {start: 300, end: 350}
   ]
 ];
-window.layOutDay(layouts[0]);
+window.layOutDay(layouts[2]);
 
 window.layout = function (index) {
+  console.time('layout');
   index = (index === undefined ? Math.floor(Math.random() * layouts.length) : index);
-  console.log('index', index);
-  console.log(layouts[index]);
   window.layOutDay(layouts[index]);
+  console.timeEnd('layout');
 };
