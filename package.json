@@ -4,8 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "./node_modules/mocha/bin/mocha test/",
-    "test-bail": "./node_modules/mocha/bin/mocha test/ --bail"
+    "test": "./node_modules/mocha/bin/mocha test/index.js --bail"
   },
   "author": "",
   "license": "ISC",
