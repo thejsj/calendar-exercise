@@ -41,22 +41,16 @@ CalendarEvent.prototype.setWidth = function () {
 };
 
 CalendarEvent.prototype.setX = function () {
-  // Get xStart and xEnd values (that are not null) for events in all cliques
   var allXValuesInClique = this.getAllXValuesInClique();
-  // Check if xStart:0 --> xEnd:width is available, use it
-  // Recursively check if any x slots are taken,
   var checkAllXPositions = function (xStart, xEnd, width) {
-    // Go through all slots
     for (var i = 0; i < allXValuesInClique.length; i += 1) {
       var _event = allXValuesInClique[i];
       var __xStart = +(_event.xStart.toFixed(20));
       var __xEnd = +(_event.xEnd.toFixed(20));
-      // check xStart and xEnd are within range
       if (
         (xStart <= __xStart && __xStart < xEnd) ||
         (xStart < __xEnd && __xEnd <= xEnd)
       ) {
-        // return function with new startX
         return checkAllXPositions(_event.xEnd, _event.xEnd + width, width);
       }
     }
@@ -67,11 +61,6 @@ CalendarEvent.prototype.setX = function () {
 };
 
 CalendarEvent.prototype.getAllXValuesInClique = function () {
-  // console.log('this.cliques');
-  // // console.log(this.cliques);
-  // console.log(_.map(this.cliques, function (arr) {
-  //   return _.pluck(arr, 'id');
-  // }));
   return _.flatten(_.map(this.cliques, function (nodes) {
     var allNodes = _.filter(nodes, function (node) {
       return (node !== this && node.xStart !== null && node.xEnd !== null);

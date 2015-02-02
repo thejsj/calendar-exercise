@@ -4,7 +4,6 @@ var React = require('react');
 var CalendarEventCollection = require('./classes/calendar-event-collection');
 var CalendarView = require('./views/calendar-view');
 
-
 (function () {
   window.layOutDay = function (events) {
     var eventCollection = new CalendarEventCollection(events);
@@ -55,13 +54,37 @@ window.layouts = [
     {start: 100, end: 200},
     {start: 300, end: 350},
     {start: 300, end: 350}
+  ],
+  [
+    {start: 0, end: 100},
+    {start: 0, end: 100},
+    {start: 0, end: 100},
+    {start: 0, end: 100},
+    {start: 0, end: 100},
+    {start: 0, end: 100},
+    {start: 0, end: 100},
+    {start: 100, end: 720},
+    {start: 250, end: 630},
+    {start: 0, end: 720}
+  ],
+  [
+    {start: 0, end: 700},
+    {start: 250, end: 450},
+    {start: 50, end: 650},
+    {start: 50, end: 100},
+    {start: 50, end: 100},
+    {start: 300, end: 400},
+    {start: 200, end: 500},
+    {start: 400, end: 500},
+    {start: 400, end: 500},
+    {start: 100, end: 600},
+    {start: 150, end: 550}
   ]
 ];
 window.layOutDay(layouts[2]);
 
 window.layout = function (index) {
-  console.time('layout');
+  console.log('layout', index);
   index = (index === undefined ? Math.floor(Math.random() * layouts.length) : index);
   window.layOutDay(layouts[index]);
-  console.timeEnd('layout');
 };

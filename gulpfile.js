@@ -20,10 +20,8 @@ gulp.task('browserify', function(){
   return watcher
     .on('update', function () { // When any files update
         var updateStart = Date.now();
-        console.log('Updating!');
         watcher.bundle() // Create new bundle that uses the cache for high performance
         .pipe(source('main.js'))
-    // This is where you add uglifying etc.
         .pipe(gulp.dest('./build/'));
         console.log('Updated!', (Date.now() - updateStart) + 'ms');
     })

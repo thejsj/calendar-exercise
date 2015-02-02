@@ -7,16 +7,11 @@ var CalendarEventCollection = function (initalEvents) {
   this.events = initalEvents.map(function (calendarEventObject) {
     return new CalenderEvent(calendarEventObject);
   });
-  // 1. Generate Graph
   this.generateGraph();
-  // 2. Get unique number of intersections
   this.uniqueNumberOfIntersections = this.getUniqueNumberOfIntersections();
-  // 3. Find all cliques in graph (in order to get max number of intersections)
   this.cliques = this.getAllCliques();
   this.setMaxNumberOfIntersectingEvents();
-  // 4. Assign width, based on (1 - allWidths) maxNumberOfIntersections
   this.setWidth();
-  // 5. Recursively Assign `x`
   this.setX();
 };
 
@@ -66,6 +61,7 @@ CalendarEventCollection.prototype.getAllCliques = function () {
     });
   }, memoizeHash);
   findCliques([], this.events);
+  // Add reference to cliques in all nodes
   var cliques = _.values(cliquesObject);
   _.forEach(cliques, function (clique) {
     _.forEach(clique.nodes, function (node) {
