@@ -21,7 +21,7 @@ var CalenderEventList = React.createClass({
         <div className='calendar-event-list'>
           {calendarEvents.map(function(item, i) {
             return (
-              <div className='calendar-event' style={ item.style }>
+              <div key={ item.id } className='calendar-event' style={ item.style }>
                 <div className='calendar-border'></div>
                 <div className='calendar-content'>
                   <h3 className='calendar-event-header'>Sample Item</h3>

@@ -10,7 +10,7 @@ var CalendarHourList = React.createClass({
       allStrings.push({
         index: i,
         style: {
-          top: (i - 10) + 'px',
+          top: (i - 7) + 'px',
         },
         isHourMark: (i % 60 === 0),
         timeString: time.format('h:mm'),
@@ -25,7 +25,7 @@ var CalendarHourList = React.createClass({
       <div className='calendar-hour-list-container'>
           {allTimeStrings.map(function(time, i) {
             return (
-            <div className={ 'hour is-hour-mark-' + time.isHourMark } style={ time.style } >
+            <div key={ i }className={ 'hour is-hour-mark-' + time.isHourMark } style={ time.style } >
               <span className='time'>{ time.timeString }</span> <span className='am-or-pm'>{ time.amPmString }</span>
             </div>
             );
