@@ -1,4 +1,4 @@
-# Facebook Test Exercise
+# Calendar Exercise
 
 Included below are the details for the challenge, along with one attachment. Your solution will be run through a suite of test cases and evaluated on correctness, elegance, and readability.
 

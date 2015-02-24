@@ -1,5 +1,5 @@
 {
-  "preset": "facebook",
+  "preset": "calendar-excercise",
 
   "disallowEmptyBlocks": true,
   "disallowImplicitTypeConversion": [
